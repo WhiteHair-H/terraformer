@@ -11,76 +11,6 @@ provider "aws" {
     region = "ap-northeast-2"
 }
 
-resource "aws_iam_user" "IAMUser" {
-    path = "/"
-    name = "weplat-github-actions-user"
-    tags = {
-        AKIAZJTVD5RMG3WEIXNV = "weplat-git-access"
-    }
-}
-
-resource "aws_iam_user" "IAMUser2" {
-    path = "/"
-    name = "weplat-monitoring-user"
-    tags = {
-        AKIAZJTVD5RMGM5N5HUI = "weplat-zabbix-access-key"
-    }
-}
-
-resource "aws_iam_policy" "IAMManagedPolicy8" {
-    name = "ECR_FullAccess_Policy"
-    path = "/"
-    policy = <<EOF
-{
-	"Version": "2012-10-17",
-	"Statement": [
-		{
-			"Sid": "VisualEditor0",
-			"Effect": "Allow",
-			"Action": [
-				"ecr:DescribeRepositoryCreationTemplate",
-				"ecr:GetRegistryPolicy",
-				"ecr:CreateRepository",
-				"ecr:DescribeRegistry",
-				"ecr:DescribePullThroughCacheRules",
-				"ecr:GetAuthorizationToken",
-				"ecr:PutRegistryScanningConfiguration",
-				"ecr:CreatePullThroughCacheRule",
-				"ecr:DeletePullThroughCacheRule",
-				"ecr:PutRegistryPolicy",
-				"ecr:GetRegistryScanningConfiguration",
-				"ecr:ValidatePullThroughCacheRule",
-				"ecr:CreateRepositoryCreationTemplate",
-				"ecr:BatchImportUpstreamImage",
-				"ecr:DeleteRepositoryCreationTemplate",
-				"ecr:DeleteRegistryPolicy",
-				"ecr:UpdatePullThroughCacheRule",
-				"ecr:PutReplicationConfiguration"
-			],
-			"Resource": "*"
-		},
-		{
-			"Sid": "VisualEditor1",
-			"Effect": "Allow",
-			"Action": "ecr:*",
-			"Resource": "arn:aws:ecr:*:639122009176:repository/*"
-		}
-	]
-}
-EOF
-}
-
-## 액세스 키 다시 찾아보기
-resource "aws_iam_access_key" "IAMAccessKey" {
-    status = "Active"
-    user = "weplat-github-actions-user"
-}
-
-resource "aws_iam_access_key" "IAMAccessKey2" {
-    status = "Active"
-    user = "weplat-monitoring-user"
-}
-
 resource "aws_vpc" "EC2VPC" {
     cidr_block = "10.0.0.0/16"
     enable_dns_support = true
@@ -152,7 +82,6 @@ resource "aws_eip_association" "EC2EIPAssociation" {
 
 resource "aws_vpc_dhcp_options" "EC2DHCPOptions" {
     domain_name = "ap-northeast-2.compute.internal"
-    tags = {}
 }
 
 resource "aws_vpc_dhcp_options_association" "EC2VPCDHCPOptionsAssociation" {
